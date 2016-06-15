@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="TaskTimer.WPF.WPFReport"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:self="clr-namespace:TaskTimer.WPF"
+			 mc:Ignorable="d"
+			 d:DesignHeight="200" d:DesignWidth="300"
+			 Height="Auto" Width="Auto"
+			 DataContext="{Binding RelativeSource={RelativeSource Self}}">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary>
+					<!-- my styles -->
+				</ResourceDictionary>
+				<ResourceDictionary Source="TreeViewFix.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+		<TreeView Grid.ColumnSpan="3" Name="TreeViewDays" ItemsSource="{Binding Days}"
+				  Grid.IsSharedSizeScope="True"
+				  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+				  Padding="5">
+			<TreeView.Resources>
+				<HierarchicalDataTemplate DataType="{x:Type self:Day}" ItemsSource="{Binding BindsDirectlyToSource=True}">
+					<Grid Margin="1">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition SharedSizeGroup="R1C0" Width="Auto" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="{Binding DateLabel}" />
+						<TextBlock Grid.Column="1" Text="{Binding TotalHours, StringFormat=N2}" HorizontalAlignment="Right" />
+					</Grid>
+				</HierarchicalDataTemplate>
+				<HierarchicalDataTemplate DataType="{x:Type self:Task}" ItemsSource="{Binding BindsDirectlyToSource=True}">
+				<Border BorderBrush="Black" BorderThickness="0,0,0,1">
+					<Grid Margin="1">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition SharedSizeGroup="R2C0" Width="Auto" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="{Binding TaskName}" />
+						<TextBlock Grid.Column="1" Text="{Binding TotalHours, StringFormat=N2}" HorizontalAlignment="Right" />
+					</Grid>
+					</Border>
+				</HierarchicalDataTemplate>
+				<DataTemplate DataType="{x:Type self:Item}">		
+					<Grid Margin="1">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition SharedSizeGroup="R3C0" Width="Auto" />
+							<ColumnDefinition SharedSizeGroup="R3C1" Width="Auto" />
+							<ColumnDefinition SharedSizeGroup="R3C2" Width="Auto" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="{Binding BeginLabel}" />
+						<TextBlock Grid.Column="1" Text=" to " />
+						<TextBlock Grid.Column="2" Text="{Binding EndLabel}" />
+						<TextBlock Grid.Column="4" Text="{Binding TotalHours, StringFormat=N2}" HorizontalAlignment="Right" />
+					</Grid>
+			</DataTemplate>
+			</TreeView.Resources>
+
+			<TreeView.ItemContainerStyle>
+			<Style TargetType="TreeViewItem" BasedOn="{StaticResource TreeViewItemFix}">
+					<Setter Property="IsExpanded" Value="{Binding Expanded}" />
+				</Style>
+		</TreeView.ItemContainerStyle>
+	</TreeView>
+</UserControl>
